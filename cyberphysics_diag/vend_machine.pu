@@ -49,17 +49,17 @@ Cloud "_ucog Environment" as Env {
 }
 
 rectangle "_plant Beer machine" as Machine {
- FA5_SIGN_IN_ALT(Controls, "**Controls (buttons, bank_terminal, cash_terminal, Cancellation button)**: \n--\n _downin call0 ... call2 _outdown \n--\n _downin Button0 ... Button5 _outdown")
- rectangle "_sensor_l \n **Sensors**:\n--\n Plant _in Obj1..Obj5 sensors _outdown \n--\n Plant _in door0closed ... door2closed sensors _outdown" as Sensors
- FA5_COG(Effect, "**Give product and change**: \n--\n _cog Door Block \n--\n _cog Spring Movement \n--\n ")
- rectangle "_actuator_l \n **Actuators (motors, pumps, etc.)**: \n--\n _upin Door0...Door2 motors _in Plant \n--\n _upin Elevator Up/Down motors _in Plant" as Actuators
- FA5_SIGN_OUT_ALT(Indicators, "**Indicators (text_display, led_p_avail)**:\n--\n _upin call0_LED ... call2_LED _outup \n--\n _upin button0_LED ... button2_LED _outup\n--\n _upin floor0_LED ... floor2_LED _outup")
+ FA5_SIGN_IN_ALT(Controls, "**Controls (buttons, bank_terminal, cash_terminal, Cancellation button)**: \n--\n _downin Cancellation _outdown \n--\n _downin Button1 ... Button5 _outdown \n--\n _downin bank_terminal _outdown \n--\n _downin cash_terminal _outdown")
+ rectangle "_sensor_l \n **Sensors**:\n--\n Plant _in Obj1..Obj5 sensors _outdown \n--\n Plant _in drop_control sensor _outdown" as Sensors
+ FA5_COG(Effect, "**Give product and change**: \n--\n _cog Door Block \n--\n _cog Spring Movement \n--\n _cog Give change ")
+ rectangle "_actuator_l \n **Actuators (motors, pumps, etc.)**: \n--\n _upin Spring0...Spring5 motors _in Plant \n--\n _upin Dropping cash motor _in Plant" as Actuators
+ FA5_SIGN_OUT_ALT(Indicators, "**Indicators (text_display, led_p_avail)**:\n--\n _upin Text Display _outup \n--\n _upin LED_Product_available _outup")
 }
 
 rectangle "_plc Controller" as Controller1 {
- FA5_SIGN_IN_ALT(inputs, "**Analog/Digital Inputs**: \n--\n _downin call0 ... call2 : BOOL \n--\n _downin button0 ... button2 : BOOL \n--\n _downin onfloor0 ... onfloor2 \n--\n _downin door0closed ... door2closed")
- FA5_COG(software, "**Control Software (Info Transformation)**: \n--\n _cog ? processe \n--\n _cog ? process")
- FA5_SIGN_OUT_ALT(outputs, "**Analog/Digital Outputs**:\n--\n open0 ... open2 : BOOL _outup\n--\n up, down : BOOL _outup\n--\n  call0_LED ... call2_LED : BOOL _outup \n--\n button0_LED ... button2_LED : BOOL _outup \n--\n floor0_LED ... floor2_LED : BOOL _outup" )
+ FA5_SIGN_IN_ALT(inputs, "**Analog/Digital Inputs**: \n--\n _downin Active_Button : BOOL \n--\n _downin cash_amount : FLOAT \n--\n _downin Door_blocked : BOOL \n--\n _downin ")
+ FA5_COG(software, "**Control Software (Info Transformation)**: \n--\n _cog workstate_change \n--\n _cog ? process")
+ FA5_SIGN_OUT_ALT(outputs, "**Analog/Digital Outputs**:\n--\n text_display : STRING _outup\n--\n Move_spring1..Move_spring5 : BOOL _outup\n--\n  Drop_cash_control : BOOL _outup \n--\n ? : BOOL _outup \n--\n ? : BOOL _outup" )
 }
 
 '↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
