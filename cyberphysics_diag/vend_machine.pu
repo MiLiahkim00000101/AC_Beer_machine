@@ -57,9 +57,9 @@ rectangle "_plant Beer machine" as Machine {
 }
 
 rectangle "_plc Controller" as Controller1 {
- FA5_SIGN_IN_ALT(inputs, "**Analog/Digital Inputs**: \n--\n _downin Active_Button : BOOL \n--\n _downin cash_amount : FLOAT \n--\n _downin Door_blocked : BOOL \n--\n _downin ")
+ FA5_SIGN_IN_ALT(inputs, "**Analog/Digital Inputs**: \n--\n _downin Active_Button : INT \n--\n _downin cash_amount : FLOAT \n--\n _downin Drop_cash : BOOL \n--\n _downin ")
  FA5_COG(software, "**Control Software (Info Transformation)**: \n--\n _cog workstate_change \n--\n _cog ? process")
- FA5_SIGN_OUT_ALT(outputs, "**Analog/Digital Outputs**:\n--\n text_display : STRING _outup\n--\n Move_spring1..Move_spring5 : BOOL _outup\n--\n  Drop_cash_control : BOOL _outup \n--\n ? : BOOL _outup \n--\n ? : BOOL _outup" )
+ FA5_SIGN_OUT_ALT(outputs, "**Analog/Digital Outputs**:\n--\n text_display : STRING _outup\n--\n Move_spring1..Move_spring5 : BOOL _outup\n--\n  Drop_cash_control : BOOL _outup \n--\n Door_blocked : BOOL _outup \n--\n ? : BOOL _outup" )
 }
 
 '↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
