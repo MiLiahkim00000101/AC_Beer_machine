@@ -27,7 +27,7 @@ VAR_OUTPUT
 	Spring5: BOOL;
 	text_display_idx : UINT;
 	user_change : UDINT;
-	
+	credit : UDINT;
 END_VAR
 
 VAR
@@ -37,8 +37,6 @@ VAR
 	price3: INT;
 	price4: INT;
 	price5: INT;
-	credit : UDINT;
-	   
 END_VAR
 
 PROCESS Main_Loop
@@ -112,7 +110,6 @@ PROCESS Main_Loop
 		END_IF
 		
 		IF cash_terminal > 0 THEN
-									
 			credit := credit + cash_terminal;
 			
 			IF active_button = 1 AND credit >= price1 THEN
@@ -206,10 +203,6 @@ PROCESS Main_Loop
 			Spring5 := 1;
 		END_IF
 		
-							 
-			 
-  
-					  
 		IF Drop_control THEN
 			Spring1 := 0;
 			Spring2 := 0;
