@@ -16,7 +16,6 @@ VAR_INPUT
 	Cancellation : BOOL;
 	bank_terminal : UDINT;
 	cash_terminal : UDINT;
-	
 END_VAR
 
 VAR_OUTPUT
@@ -37,12 +36,14 @@ VAR
 	price3: INT;
 	price4: INT;
 	price5: INT;
+	cash_prev : UDINT;
 END_VAR
 
 PROCESS Main_Loop
 	
     STATE product_chosing
 	    active_button := 0;
+	    cash_prev := 0;
 	    IF Button1 THEN
 			active_button := 1;
 			IF NOT Obj1 THEN
@@ -110,8 +111,11 @@ PROCESS Main_Loop
 		END_IF
 		
 		IF cash_terminal > 0 THEN
-			credit := credit + cash_terminal;
-			
+			IF cash_prev < cash_terminal THEN
+				credit := credit + cash_terminal;
+			END_IF
+			cash_prev := cash_terminal;			
+
 			IF active_button = 1 AND credit >= price1 THEN
 				credit := credit - price1;
 				SET STATE give_product;
@@ -158,6 +162,51 @@ PROCESS Main_Loop
 			END_IF
 			
 		END_IF
+			
+			IF active_button = 1 AND bank_terminal >= price1 THEN
+				credit := credit - price1;
+				SET STATE give_product;
+			END_IF
+			
+			IF active_button = 1 AND bank_terminal < price1 THEN
+				SET STATE not_enough_money;
+			END_IF
+			
+			IF active_button = 2 AND bank_terminal >= price2 THEN
+				credit := credit - price2;
+				SET STATE give_product;
+			END_IF
+			
+			IF active_button = 2 AND bank_terminal < price2 THEN
+				SET STATE not_enough_money;
+			END_IF
+			
+			IF active_button = 3 AND bank_terminal >= price3 THEN
+				credit := credit - price3;
+				SET STATE give_product;
+			END_IF
+			
+			IF active_button = 3 AND bank_terminal < price3 THEN
+				SET STATE not_enough_money;
+			END_IF
+			
+			IF active_button = 4 AND bank_terminal >= price4 THEN
+				credit := credit - price4;
+				SET STATE give_product;
+			END_IF
+			
+			IF active_button = 4 AND bank_terminal < price4 THEN
+				SET STATE not_enough_money;
+			END_IF
+			
+			IF active_button = 5 AND bank_terminal >= price5 THEN
+				credit := credit - price5;
+				SET STATE give_product;
+			END_IF
+			
+			IF active_button = 5 AND bank_terminal < price5 THEN
+				SET STATE not_enough_money;
+			END_IF
 		
 		IF bank_terminal > 0 THEN
 			SET STATE give_product;
