@@ -25,7 +25,6 @@ VAR_OUTPUT
 	Spring4: BOOL;
 	Spring5: BOOL;
 	text_display_idx : UINT;
-	user_change : UDINT;
 	credit : UDINT;
 END_VAR
 
@@ -37,6 +36,7 @@ VAR
 	price4: INT;
 	price5: INT;
 	cash_prev : UDINT;
+	user_change : UDINT;
 END_VAR
 
 PROCESS Main_Loop
@@ -44,6 +44,17 @@ PROCESS Main_Loop
     STATE product_chosing
 	    active_button := 0;
 	    cash_prev := 0;
+		(*Перенести  в Constqnt VAR*)
+		price1 := 15;
+		price2 := 10;
+		price3 := 5;
+		price4 := 7;
+		price5 := 20;
+		
+		IF Cancellation THEN
+			SET STATE give_change;
+		END_IF
+		
 	    IF Button1 THEN
 			active_button := 1;
 			IF NOT Obj1 THEN
@@ -92,9 +103,10 @@ PROCESS Main_Loop
 	    END_IF
 		TIMEOUT T#3s THEN
 			text_display_idx := 0;
-			RESTART;
+			RESTART; (*Reset timer or nothing*)
 		END_TIMEOUT
     END_STATE
+	(*При нажатии на кнопку надо таймер ресет*) 
 	
 	STATE payment_wait
 		text_display_idx := 2;
@@ -114,15 +126,11 @@ PROCESS Main_Loop
 			IF cash_prev < cash_terminal THEN
 				credit := credit + cash_terminal;
 			END_IF
-			cash_prev := cash_terminal;			
+	
 
 			IF active_button = 1 AND credit >= price1 THEN
 				credit := credit - price1;
 				SET STATE give_product;
-			END_IF
-			
-			IF active_button = 1 AND credit < price1 THEN
-				SET STATE not_enough_money;
 			END_IF
 			
 			IF active_button = 2 AND credit >= price2 THEN
@@ -130,17 +138,9 @@ PROCESS Main_Loop
 				SET STATE give_product;
 			END_IF
 			
-			IF active_button = 2 AND credit < price2 THEN
-				SET STATE not_enough_money;
-			END_IF
-			
 			IF active_button = 3 AND credit >= price3 THEN
 				credit := credit - price3;
 				SET STATE give_product;
-			END_IF
-			
-			IF active_button = 3 AND credit < price3 THEN
-				SET STATE not_enough_money;
 			END_IF
 			
 			IF active_button = 4 AND credit >= price4 THEN
@@ -148,28 +148,16 @@ PROCESS Main_Loop
 				SET STATE give_product;
 			END_IF
 			
-			IF active_button = 4 AND credit < price4 THEN
-				SET STATE not_enough_money;
-			END_IF
-			
 			IF active_button = 5 AND credit >= price5 THEN
 				credit := credit - price5;
 				SET STATE give_product;
 			END_IF
-			
-			IF active_button = 5 AND credit < price5 THEN
-				SET STATE not_enough_money;
-			END_IF
-			
-		END_IF
-			
+		
+		ELSE
+				
 			IF active_button = 1 AND bank_terminal >= price1 THEN
 				credit := credit - price1;
 				SET STATE give_product;
-			END_IF
-			
-			IF active_button = 1 AND bank_terminal < price1 THEN
-				SET STATE not_enough_money;
 			END_IF
 			
 			IF active_button = 2 AND bank_terminal >= price2 THEN
@@ -177,17 +165,9 @@ PROCESS Main_Loop
 				SET STATE give_product;
 			END_IF
 			
-			IF active_button = 2 AND bank_terminal < price2 THEN
-				SET STATE not_enough_money;
-			END_IF
-			
 			IF active_button = 3 AND bank_terminal >= price3 THEN
 				credit := credit - price3;
 				SET STATE give_product;
-			END_IF
-			
-			IF active_button = 3 AND bank_terminal < price3 THEN
-				SET STATE not_enough_money;
 			END_IF
 			
 			IF active_button = 4 AND bank_terminal >= price4 THEN
@@ -195,22 +175,21 @@ PROCESS Main_Loop
 				SET STATE give_product;
 			END_IF
 			
-			IF active_button = 4 AND bank_terminal < price4 THEN
-				SET STATE not_enough_money;
-			END_IF
-			
 			IF active_button = 5 AND bank_terminal >= price5 THEN
 				credit := credit - price5;
 				SET STATE give_product;
 			END_IF
 			
-			IF active_button = 5 AND bank_terminal < price5 THEN
-				SET STATE not_enough_money;
-			END_IF
-		
-		IF bank_terminal > 0 THEN
-			SET STATE give_product;
+			(*IF bank_terminal > 0 THEN
+				SET STATE give_product;
+			END_IF*)
 		END_IF
+		
+		cash_prev := cash_terminal;	
+		
+		TIMEOUT T#5s THEN
+			SET STATE not_enough_money;
+		END_TIMEOUT
 		
 	END_STATE
 	
@@ -224,7 +203,9 @@ PROCESS Main_Loop
 	END_STATE
 
 	STATE give_change
-		user_change := credit;
+		IF credit > 0 THEN
+			user_change := credit;
+		END_IF
 		credit := 0;
 
 		TIMEOUT T#3s THEN
@@ -258,7 +239,7 @@ PROCESS Main_Loop
 			Spring3 := 0;
 			Spring4 := 0;
 			Spring5 := 0;
-			SET STATE product_chosing;
+			SET STATE give_change;
 		END_IF
 		
 		TIMEOUT T#3s THEN
