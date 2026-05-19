@@ -158,33 +158,25 @@ PROCESS Main_Loop
 		ELSE
 				
 			IF active_button = 1 AND bank_terminal >= price1 THEN
-				credit := credit - price1;
 				SET STATE give_product;
 			END_IF
 			
 			IF active_button = 2 AND bank_terminal >= price2 THEN
-				credit := credit - price2;
 				SET STATE give_product;
 			END_IF
 			
 			IF active_button = 3 AND bank_terminal >= price3 THEN
-				credit := credit - price3;
 				SET STATE give_product;
 			END_IF
 			
 			IF active_button = 4 AND bank_terminal >= price4 THEN
-				credit := credit - price4;
 				SET STATE give_product;
 			END_IF
 			
 			IF active_button = 5 AND bank_terminal >= price5 THEN
-				credit := credit - price5;
 				SET STATE give_product;
 			END_IF
-			
-			(*IF bank_terminal > 0 THEN
-				SET STATE give_product;
-			END_IF*)
+
 		END_IF
 		
 		cash_prev := cash_terminal;	
