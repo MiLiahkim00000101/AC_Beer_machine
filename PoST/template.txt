@@ -2,11 +2,11 @@
 PROGRAM Controller
 
 VAR CONSTANT
-	price1: INT := 15;
-	price2: INT := 10;
-	price3: INT := 5;
-	price4: INT := 7;
-	price5: INT := 20;
+	price1: UDINT := 15;
+	price2: UDINT := 10;
+	price3: UDINT := 5;
+	price4: UDINT := 7;
+	price5: UDINT := 20;
 
 END_VAR
 
