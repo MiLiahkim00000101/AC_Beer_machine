@@ -1,6 +1,15 @@
 (*Controller*)
 PROGRAM Controller
 
+VAR CONSTANT
+	price1: INT := 15;
+	price2: INT := 10;
+	price3: INT := 5;
+	price4: INT := 7;
+	price5: INT := 20;
+
+END_VAR
+
 VAR_INPUT
 	Obj1 : BOOL;
 	Obj2 : BOOL;
@@ -24,17 +33,12 @@ VAR_OUTPUT
 	Spring3: BOOL;
 	Spring4: BOOL;
 	Spring5: BOOL;
-	text_display_idx : UINT;
+	text_display_idx : UDINT;
 	credit : UDINT;
 END_VAR
 
 VAR
-	active_button : INT;
-	price1: INT;
-	price2: INT;
-	price3: INT;
-	price4: INT;
-	price5: INT;
+	active_button : UDINT;
 	cash_prev : UDINT;
 	user_change : UDINT;
 END_VAR
@@ -44,12 +48,6 @@ PROCESS Main_Loop
     STATE product_chosing
 	    active_button := 0;
 	    cash_prev := 0;
-		(*Перенести  в Constqnt VAR*)
-		price1 := 15;
-		price2 := 10;
-		price3 := 5;
-		price4 := 7;
-		price5 := 20;
 		
 		IF Cancellation THEN
 			SET STATE give_change;
@@ -101,12 +99,16 @@ PROCESS Main_Loop
 				SET STATE payment_wait;
 			END_IF
 	    END_IF
+		
+		IF active_button <> 0 THEN
+			RESET TIMER;
+		END_IF
+		
 		TIMEOUT T#3s THEN
 			text_display_idx := 0;
-			RESTART; (*Reset timer or nothing*)
+			RESET TIMER;
 		END_TIMEOUT
     END_STATE
-	(*При нажатии на кнопку надо таймер ресет*) 
 	
 	STATE payment_wait
 		text_display_idx := 2;
@@ -204,7 +206,7 @@ PROCESS Main_Loop
 
 	STATE give_change
 		IF credit > 0 THEN
-			user_change := credit;
+			user_change := user_change + credit;
 		END_IF
 		credit := 0;
 
