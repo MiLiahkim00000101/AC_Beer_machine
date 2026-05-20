@@ -121,7 +121,7 @@ PROCESS Main_Loop
 		text_display_idx := 3;
 		
 		IF Cancellation THEN
-			SET STATE give_change;
+			SET STATE no_wait_change;
 		END_IF
 		
 		IF cash_terminal > 0 THEN
@@ -206,6 +206,15 @@ PROCESS Main_Loop
 			SET STATE product_chosing;
 		END_TIMEOUT
 	
+	END_STATE
+
+	STATE no_wait_change
+		IF credit > 0 THEN
+			user_change := user_change + credit;
+		END_IF
+		credit := 0;
+
+		SET STATE product_chosing;
 	END_STATE
 	
 	STATE give_product
