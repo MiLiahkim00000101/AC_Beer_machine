@@ -3,3 +3,6 @@ Beer_machine.project.~u
 Beer_machine-AllUsers.opt
 Beer_machine-mihas-DESKTOP-3TDNGQ1.opt
 *.opt
+*.bootinfo
+*.bootinfo_guids
+*.compileinfo
